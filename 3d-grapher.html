@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/3d-grapher.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="canonical" href="https://www.materialscomputing.pw/" />
+    <meta name="description" content="برنامج علي الويب (اونلاين) لرسم المعادلات و الدوال الرياضية ثلاثية الأبعاد">
+    <meta name="keywords" content="نظم الاحداثيات, ثلاثي الأبعاد, أسطح, كارتيزي">
+    <meta name="author" content="Emad Hasabeldaim Hadi Hasabeldaim">
+    <meta http-equiv="refresh" content="3600"/>
+    <script src='js/math.js' type='text/javascript'></script>
+    <script type="text/javascript" src="echart/dist/echarts.js"></script>
+    <script type="text/javascript" src="echart/dist/echarts-gl.min.js"></script> 
+    <title>رسم منحنيات المعادلات و الدوال الرياضية في ثلاثة أبعاد</title>
+</head>
+
+<body>
+    <header> 
+        <nav class='navbar'>
+            <input type='checkbox' id='check'>
+            <label for='check' class='toggle-button'>   
+                <span class='bar'></span>
+                <span class='bar'></span>
+                <span class='bar'></span>
+            </label>
+
+            <label class="brand-title">MatCalc</label>
+
+            <img class='search' src="images/search-icon.png" alt="srearch icon"> 
+
+            <ul class='menu'>
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="visualize-math-functions.html">f(x) رسم المنحنيات الرياصية في بعدين</a></li>
+                <li><a href="3d-grapher.html">f(x, y) رسم المنحنيات الرياضية في ثلاث أبعاد</a></li>
+                <li><a href="cartesian-to-cylindrical-to-sphere.html">التحويل بن النظام الكارتيزيي, الأسطواني, و القطبي</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class='body-content'>
+        <div class='content'>
+            <h2>برنامج علي الويب (أونلاين) لرسم منحنيات الدوال و المعادلات الرياضية في ثلاث أبعاد
+            </h2>
+            <p>f(x, y) علي هذه الواجهة, يمكنك كتابة أي معادلة أو دالة رياضية لديها  متغيرين و رسمها مباشرتا</br>
+                .أستخدم ^ للرفع الي أي قوة<br>
+                .للوغريثم log(رقم/x, أساس) أستخدم<br>
+                .للجذر التربيعي sqrt(x) أستخدم<br>
+                .بقية الرموز الرياضية هي نفسها المستخدمة عموما<br>
+
+            </p>  
+            <p> المحور السيني <input type="text" id='x-from' value='-5' maxlength="2" > من
+                <input type="text" id='x-interval' value='0.1' maxlength="3"> الفترة
+                <input type="text" id='x-to' value='5' maxlength="1"> الي(x)
+            </p>
+
+            <p> المحور الصادي <input type="text" id='y-from' value='-5' maxlength="2" > من
+                 <input type="text" id='y-interval' value='0.1' maxlength="3"> الفترة
+                 <input type="text" id='y-to' value='5' maxlength="1"> الي(y)
+            </p>
+
+            <p>F(x, y)  <input type="text" id='fx' value='sin(x)*cos(y)'>
+                <input type="submit" id='submit' value='أرسم' onclick='plot()'>
+            </p>
+            
+            <div id="main">        </div>
+              
+        </div>
+    </div>
+
+    <div class='bottom-bar'>
+        
+        <div class='contact-us'>
+            اتصل بنا </br>
+            <a href = "mailto: omda180@gmail.com"><img src="images/gmail-logo.png" alt="gmail"></a>
+            <a href = "https://www.facebook.com/profile.php?id=100001888282568"><img src="images/facebook-logo.png" alt="facebook"></a>
+            <a href = "https://www.researchgate.net/profile/Emad_Hasabeldaim"><img src="images/research-gate-logo.png" alt="researchgate"></a>
+            <a href = "https://www.linkedin.com/in/emad-hasabeldaim-92b605125/"><img src="images/linkedin-logo.png" alt="linkedin"></a>
+        </div>
+    </div>
+    
+    <script>
+        window.onload = function(){
+            plot();
+        }
+
+        //Ploting function
+        function plot(){
+            let xFrom = Number(document.getElementById('x-from').value);
+            let xInterval = Number(document.getElementById('x-interval').value);
+            let xTo = Number(document.getElementById('x-to').value);
+
+            let yFrom = Number(document.getElementById('y-from').value);
+            let yInterval = Number(document.getElementById('y-interval').value);
+            let yTo = Number(document.getElementById('y-to').value);
+
+            let fx = document.getElementById('fx').value
+
+            //Processing the user input to javascript form
+            let Interprator = ['x', 'y', 'e', 'sin-1', 'cos-1', 'tan-1', 'sinh-1', 'cosh-1', 'tanh-1', 'cot-1', 'coth-1'];
+            let InterpratorOut = ['(x)', '(y)', '(e)', 'asin', 'acos', 'atan', 'asinh', 'acosh', 'atanh', 'acot', 'acoth']
+
+                let i = 0;
+                while(i < Interprator.length){
+                    if(fx.match(Interprator[i])){
+                        let re = new RegExp(Interprator[i], 'g');
+                        var s = fx.replace(re, InterpratorOut[i]);
+                        fx = s;
+                    }
+                    i++     
+                }
+            var myChart = echarts.init(document.getElementById('main'));
+            option = {
+                tooltip: {},
+                backgroundColor: 'green',
+                visualMap: {
+                    show: true,
+                    dimension: 2,
+                    min: -5,
+                    max: 5,
+                    inRange: {
+                        color: ['red', 'blue']
+                    }
+                },
+                xAxis3D: {
+                    type: 'value'
+                },
+                yAxis3D: {
+                    type: 'value'
+                },
+                zAxis3D: {
+                    type: 'value'
+                },
+                grid3D: {
+                    viewControl: {
+                        // projection: 'orthographic'
+                    }
+                },
+                series: [{
+                    type: 'surface',
+                    wireframe: {
+                        // show: false
+                    },
+                    equation: {
+                        x: {
+                            step: xInterval,
+                            min: xFrom,
+                            max: xTo,
+                        },
+                        y: {
+                            step: yInterval,
+                            min: yFrom,
+                            max: yTo,
+                        },
+                        z: function (x, y) {
+                            parsed = math.parse(fx);
+                            return parsed.evaluate({x, y});
+                        }
+                    }
+                }]
+            }
+            myChart.setOption(option);
+        }onerror = function(error){
+            document.write('Refresh and try to insert a correct f(x, y) formula');
+        }
+
+        //preventing inspection
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
+
+    
