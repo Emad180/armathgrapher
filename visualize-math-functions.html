@@ -75,9 +75,9 @@
     </div>
     
     <script>
-//         window.onload = function(){
-//             plot();
-//         }
+        window.onload = function(){
+            plot();
+        }
 
         //Ploting function
         function plot(){
@@ -181,10 +181,9 @@
                     }
                 }
             });
+        }onerror = function(error){
+            document.write('Refresh and try to insert a correct f(x) formula');
         }
-//         onerror = function(error){
-//             document.write('Refresh and try to insert a correct f(x) formula');
-//         }
 
         //preventing inspection
         document.addEventListener('contextmenu', function(e) {
