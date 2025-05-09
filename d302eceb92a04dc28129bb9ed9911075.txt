@@ -3,7 +3,7 @@ Content-Type: application/json; charset=utf-8
 Host: api.indexnow.org
 {
   "host": "https://ar.sci-sim.com",
-  "key": "",
+  "key": "d302eceb92a04dc28129bb9ed9911075",
   "keyLocation": "https://ar.sci-sim.com/d302eceb92a04dc28129bb9ed9911075.txt",
   "urlList": [
       "https://ar.sci-sim.com/index.html",
