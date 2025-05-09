@@ -1,0 +1,14 @@
+POST /IndexNow HTTP/1.1
+Content-Type: application/json; charset=utf-8
+Host: api.indexnow.org
+{
+  "host": "https://ar.sci-sim.com",
+  "key": "",
+  "keyLocation": "https://ar.sci-sim.com/d302eceb92a04dc28129bb9ed9911075.txt",
+  "urlList": [
+      "https://ar.sci-sim.com/index.html",
+      "https://ar.sci-sim.com/visualize-math-functions.html",
+      "https://ar.sci-sim.com/3d-grapher.html",
+      "https://ar.sci-sim.com/cartesian-to-cylindrical-to-sphere.html"
+      ]
+}
